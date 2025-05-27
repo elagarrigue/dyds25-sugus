@@ -25,7 +25,6 @@ import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import dydsproject.composeapp.generated.resources.*
 import edu.dyds.movies.LoadingIndicator
-import edu.dyds.movies.MoviesViewModel
 import edu.dyds.movies.NoResults
 import edu.dyds.movies.domain.entity.Movie
 import org.jetbrains.compose.resources.stringResource
