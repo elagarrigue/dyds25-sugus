@@ -2,6 +2,10 @@ package edu.dyds.movies.di
 
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
+import edu.dyds.movies.data.MoviesRepositoryImpl
+import edu.dyds.movies.domain.repository.MoviesRepository
+import edu.dyds.movies.domain.usecase.GetMovieDetailsUseCase
+import edu.dyds.movies.domain.usecase.GetPopularMoviesUseCase
 import edu.dyds.movies.presentation.detail.DetailViewModel
 import edu.dyds.movies.presentation.home.HomeViewModel
 import io.ktor.client.*
@@ -34,13 +38,17 @@ object MoviesDependencyInjector {
             }
         }
 
+    private val repository = MoviesRepositoryImpl(tmdbHttpClient)
+    val getPopularMoviesUseCase = GetPopularMoviesUseCase(repository)
+    val getMovieDetailsUseCase = GetMovieDetailsUseCase(repository)
+
     @Composable
     fun getHomeViewModel(): HomeViewModel {
-        return viewModel { HomeViewModel(tmdbHttpClient) }
+        return viewModel { HomeViewModel(getPopularMoviesUseCase) }
     }
 
     @Composable
     fun getDetailViewModel(): DetailViewModel {
-        return viewModel { DetailViewModel(tmdbHttpClient)}
+        return viewModel { DetailViewModel(getMovieDetailsUseCase)}
     }
 }

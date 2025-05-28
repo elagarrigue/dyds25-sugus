@@ -20,8 +20,8 @@ import coil3.compose.AsyncImage
 import dydsproject.composeapp.generated.resources.Res
 import dydsproject.composeapp.generated.resources.app_name
 import dydsproject.composeapp.generated.resources.error
-import edu.dyds.movies.LoadingIndicator
-import edu.dyds.movies.NoResults
+import edu.dyds.movies.presentation.utils.LoadingIndicator
+import edu.dyds.movies.presentation.utils.NoResults
 import edu.dyds.movies.domain.entity.Movie
 import edu.dyds.movies.domain.entity.QualifiedMovie
 import org.jetbrains.compose.resources.stringResource

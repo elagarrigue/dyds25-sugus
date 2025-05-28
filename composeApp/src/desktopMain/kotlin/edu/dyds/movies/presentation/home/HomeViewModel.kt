@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import edu.dyds.movies.domain.entity.QualifiedMovie
 import edu.dyds.movies.domain.entity.RemoteMovie
 import edu.dyds.movies.domain.entity.RemoteResult
+import edu.dyds.movies.domain.usecase.GetPopularMoviesUseCase
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*
@@ -15,7 +16,7 @@ import kotlinx.coroutines.launch
 private const val MIN_VOTE_AVERAGE = 6.0
 
 class HomeViewModel(
-private val tmdbHttpClient: HttpClient,
+private val getPopularMoviesUseCase: GetPopularMoviesUseCase,
 ) : ViewModel() {
 
     private val cacheMovies: MutableList<RemoteMovie> = mutableListOf()
@@ -64,7 +65,7 @@ private val tmdbHttpClient: HttpClient,
     }
 
     private suspend fun getTMDBPopularMovies(): RemoteResult =
-        tmdbHttpClient.get("/3/discover/movie?sort_by=popularity.desc").body()
+        getPopularMoviesUseCase()
 
     data class MoviesUiState(
         val isLoading: Boolean = false,
