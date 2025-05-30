@@ -9,9 +9,25 @@ import io.ktor.client.request.get
 
 class MoviesRepositoryImpl(override val tmdbHttpClient: HttpClient) : MoviesRepository{
 
+    private val cacheMovies: MutableList<RemoteMovie> = mutableListOf()
+
     override suspend fun getTMDBMovieDetails(id: Int): RemoteMovie =
         tmdbHttpClient.get("/3/movie/$id").body()
 
-    override suspend fun getTMDBPopularMovies(): RemoteResult =
+    override suspend fun getTMDBPopularMovies():  List<RemoteMovie> =
+        if (cacheMovies.isNotEmpty()) {
+            cacheMovies
+        } else {
+            try {
+                getMoviesFromDB().results.apply {
+                    cacheMovies.clear()
+                    cacheMovies.addAll(this)
+                }
+            } catch (e: Exception) {
+                emptyList()
+            }
+        }
+
+    private suspend fun getMoviesFromDB() : RemoteResult =
         tmdbHttpClient.get("/3/discover/movie?sort_by=popularity.desc").body()
 }

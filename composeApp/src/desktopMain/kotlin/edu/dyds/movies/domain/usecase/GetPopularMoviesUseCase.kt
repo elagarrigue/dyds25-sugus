@@ -8,25 +8,12 @@ private const val MIN_VOTE_AVERAGE = 6.0
 
 class GetPopularMoviesUseCase(private val repository: MoviesRepository) {
 
-    private val cacheMovies: MutableList<RemoteMovie> = mutableListOf()
-
     suspend operator fun invoke(): List<QualifiedMovie> {
         return getPopularMovies().sortAndMap()
     }
 
     private suspend fun getPopularMovies() =
-        if (cacheMovies.isNotEmpty()) {
-            cacheMovies
-        } else {
-            try {
-                repository.getTMDBPopularMovies().results.apply {
-                    cacheMovies.clear()
-                    cacheMovies.addAll(this)
-                }
-            } catch (e: Exception) {
-                emptyList()
-            }
-        }
+        repository.getTMDBPopularMovies()
 
     private fun List<RemoteMovie>.sortAndMap(): List<QualifiedMovie> {
         return this
@@ -38,6 +25,4 @@ class GetPopularMoviesUseCase(private val repository: MoviesRepository) {
                 )
             }
     }
-
-
 }
