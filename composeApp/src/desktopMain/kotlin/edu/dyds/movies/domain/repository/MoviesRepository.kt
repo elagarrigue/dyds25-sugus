@@ -1,10 +1,11 @@
 package edu.dyds.movies.domain.repository
 
-import edu.dyds.movies.domain.entity.RemoteMovie
+import edu.dyds.movies.data.external.ExternalRepository
+import edu.dyds.movies.data.local.MoviesCache
+import edu.dyds.movies.domain.entity.Movie
 import io.ktor.client.*
 
 interface MoviesRepository {
-    val tmdbHttpClient : HttpClient
-    suspend fun getTMDBMovieDetails(id: Int): RemoteMovie
-    suspend fun getTMDBPopularMovies():  List<RemoteMovie>
+    suspend fun getTMDBMovieDetails(id: Int): Movie
+    suspend fun getTMDBPopularMovies():  List<Movie>
 }

@@ -11,7 +11,9 @@ class MoviesCache {
     fun clear() =
         cacheMovies.clear()
 
-    fun addAll(movies : Collection<Movie>) =
+    fun addAll(movies : List<Movie>) =
         cacheMovies.addAll(movies)
 
+    fun getAll() =
+        cacheMovies
 }
