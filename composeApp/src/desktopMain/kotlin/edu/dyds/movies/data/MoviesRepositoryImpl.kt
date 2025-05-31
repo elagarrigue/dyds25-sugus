@@ -17,7 +17,7 @@ class MoviesRepositoryImpl(
         if (!cacheMovies.isEmpty()) {
             return cacheMovies.getAll()
         } else {
-            val popularMovies: List<Movie> = externalRepository.getTMDBPopularMovies().results.map {
+            val popularMovies: List<Movie> = externalRepository.getTMDBPopularMovies().map {
                 it.toDomainMovie()
             }
             cacheMovies.addAll(popularMovies)
