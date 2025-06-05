@@ -11,25 +11,15 @@ class MoviesRepositoryImpl(
     ) : MoviesRepository{
 
     override suspend fun getMovieDetails(id: Int): Movie? =
-        try {
-            externalRepository.getTMDBMovieDetails(id).toDomainMovie()
-        }catch(e: Exception){
-            null
-        }
+        externalRepository.getTMDBMovieDetails(id)
+
     override suspend fun getPopularMovies(): List<Movie> {
         if (!cacheMovies.isEmpty()) {
             return cacheMovies.getAll()
         } else {
-            val popularMovies: List<Movie> = getFormattedMovies()
+            val popularMovies: List<Movie> = externalRepository.getTMDBPopularMovies()
             cacheMovies.addAll(popularMovies)
             return popularMovies
         }
     }
-    private suspend fun getMoviesFromExternalRepo()=
-        externalRepository.getTMDBPopularMovies()
-
-    private suspend fun getFormattedMovies()=
-        getMoviesFromExternalRepo().map {
-            it.toDomainMovie()
-        }
 }
