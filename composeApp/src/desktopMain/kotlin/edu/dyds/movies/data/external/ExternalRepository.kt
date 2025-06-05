@@ -1,20 +1,31 @@
 package edu.dyds.movies.data.external
 
-import edu.dyds.movies.data.RemoteMovie
-import edu.dyds.movies.data.RemoteResult
+import edu.dyds.movies.domain.entity.Movie
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 
 class ExternalRepository (val tmdbHttpClient: HttpClient){
-    public suspend fun getTMDBMovieDetails(id: Int): RemoteMovie =
-        tmdbHttpClient.get("/3/movie/$id").body()
-    public suspend fun getTMDBPopularMovies(): List<RemoteMovie> =
+    suspend fun getTMDBMovieDetails(id: Int): Movie? {
         try {
-            getRemoteResult().results
+            var remoteMovie: RemoteMovie = tmdbHttpClient.get("/3/movie/$id").body()
+            return remoteMovie.toDomainMovie()
+        }catch(e: Exception){
+            return null
+        }
+    }
+
+    suspend fun getTMDBPopularMovies(): List<Movie> =
+        try {
+            getRemoteResult()
         } catch (e: Exception) {
             emptyList()
         }
-    private suspend fun getRemoteResult(): RemoteResult =
-        tmdbHttpClient.get("/3/discover/movie?sort_by=popularity.desc").body()
+
+    private suspend fun getRemoteResult(): List<Movie> {
+        var remoteResults: RemoteResult = tmdbHttpClient.get("/3/discover/movie?sort_by=popularity.desc").body()
+        return remoteResults.results.map {
+            it.toDomainMovie()
+        }
+    }
 }

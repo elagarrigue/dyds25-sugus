@@ -1,8 +1,7 @@
-package edu.dyds.movies.data
+package edu.dyds.movies.data.external
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-
 
 @Serializable
 data class RemoteResult(
