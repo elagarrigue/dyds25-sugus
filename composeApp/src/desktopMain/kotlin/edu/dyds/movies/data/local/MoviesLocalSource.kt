@@ -2,7 +2,7 @@ package edu.dyds.movies.data.local
 
 import edu.dyds.movies.domain.entity.Movie
 
-class MoviesCache {
+class MoviesLocalSource {
     private val cacheMovies: MutableList<Movie> = mutableListOf()
 
     fun isEmpty() =

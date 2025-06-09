@@ -4,5 +4,5 @@ import edu.dyds.movies.domain.entity.Movie
 
 interface MoviesRepository {
     suspend fun getMovieDetails(id: Int): Movie?
-    suspend fun getPopularMovies():  List<Movie>
+    suspend fun getPopularMovies(): List<Movie>
 }

@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 
 
 class HomeViewModel(
-private val getPopularMoviesUseCase: GetPopularMoviesUseCase,
+    private val getPopularMoviesUseCase: GetPopularMoviesUseCase,
 ) : ViewModel() {
 
 
