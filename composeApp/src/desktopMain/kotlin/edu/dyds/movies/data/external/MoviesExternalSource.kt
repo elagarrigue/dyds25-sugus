@@ -8,7 +8,7 @@ import io.ktor.client.request.get
 class ExternalRepository (val tmdbHttpClient: HttpClient){
     suspend fun getTMDBMovieDetails(id: Int): Movie? {
         try {
-            var remoteMovie: RemoteMovie = tmdbHttpClient.get("/3/movie/$id").body()
+            val remoteMovie: RemoteMovie = tmdbHttpClient.get("/3/movie/$id").body()
             return remoteMovie.toDomainMovie()
         }catch(e: Exception){
             return null
@@ -23,7 +23,7 @@ class ExternalRepository (val tmdbHttpClient: HttpClient){
         }
 
     private suspend fun getRemoteResult(): List<Movie> {
-        var remoteResults: RemoteResult = tmdbHttpClient.get("/3/discover/movie?sort_by=popularity.desc").body()
+        val remoteResults: RemoteResult = tmdbHttpClient.get("/3/discover/movie?sort_by=popularity.desc").body()
         return remoteResults.results.map {
             it.toDomainMovie()
         }

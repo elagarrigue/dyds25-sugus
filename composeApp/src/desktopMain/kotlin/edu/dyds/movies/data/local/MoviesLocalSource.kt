@@ -8,11 +8,10 @@ class MoviesCache {
     fun isEmpty() =
         cacheMovies.isEmpty()
 
-    fun clear() =
+    fun addAll(movies : List<Movie>) {
         cacheMovies.clear()
-
-    fun addAll(movies : List<Movie>) =
         cacheMovies.addAll(movies)
+    }
 
     fun getAll() =
         cacheMovies
