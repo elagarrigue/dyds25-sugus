@@ -10,6 +10,7 @@ class GetPopularMoviesUseCase(private val repository: MoviesRepository) {
 
     suspend operator fun invoke(): List<QualifiedMovie> =
         getPopularMovies().sortByQualification().mapToQualification()
+
     private suspend fun getPopularMovies() =
         repository.getPopularMovies()
 

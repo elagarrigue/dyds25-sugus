@@ -16,8 +16,8 @@ data class RemoteMovie(
     @SerialName("original_language") val originalLanguage: String,
     val popularity: Double,
     @SerialName("vote_average") val voteAverage: Double,
+) {
 
-    ) {
     fun toDomainMovie(): Movie {
         return Movie(
             id = id,

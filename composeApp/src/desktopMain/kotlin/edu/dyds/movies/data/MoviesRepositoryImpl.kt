@@ -8,18 +8,29 @@ import edu.dyds.movies.domain.repository.MoviesRepository
 class MoviesRepositoryImpl(
     private val moviesLocalSource: MoviesLocalSource,
     private val moviesExternalSource: MoviesExternalSource
-    ) : MoviesRepository{
+) : MoviesRepository {
 
     override suspend fun getMovieDetails(id: Int): Movie? =
-        moviesExternalSource.getTMDBMovieDetails(id)
+        try {
+            moviesExternalSource.getTMDBMovieDetails(id)
+        } catch (e: Exception) {
+            null
+        }
 
     override suspend fun getPopularMovies(): List<Movie> {
-        if (!moviesLocalSource.isEmpty()) {
-            return moviesLocalSource.getAll()
+        return if (!moviesLocalSource.isEmpty()) {
+            moviesLocalSource.getAll()
         } else {
-            val popularMovies: List<Movie> = moviesExternalSource.getTMDBPopularMovies()
-            moviesLocalSource.addAll(popularMovies)
-            return popularMovies
+            getMoviesFromRemote().also { movies ->
+                moviesLocalSource.addAll(movies)
+            }
         }
     }
+
+    private suspend fun getMoviesFromRemote(): List<Movie> =
+        try {
+            moviesExternalSource.getTMDBPopularMovies()
+        } catch (e: Exception) {
+            emptyList()
+        }
 }
