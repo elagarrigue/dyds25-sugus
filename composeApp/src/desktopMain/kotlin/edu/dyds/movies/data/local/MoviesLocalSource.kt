@@ -2,18 +2,11 @@ package edu.dyds.movies.data.local
 
 import edu.dyds.movies.domain.entity.Movie
 
-class MoviesLocalSource {
+interface MoviesLocalSource {
 
-    private val cacheMovies: MutableList<Movie> = mutableListOf()
+    fun isEmpty(): Boolean
 
-    fun isEmpty() =
-        cacheMovies.isEmpty()
+    fun addAll(movies: List<Movie>)
 
-    fun addAll(movies : List<Movie>) {
-        cacheMovies.clear()
-        cacheMovies.addAll(movies)
-    }
-
-    fun getAll() =
-        cacheMovies
+    fun getAll(): List<Movie>
 }
