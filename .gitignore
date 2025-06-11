@@ -78,3 +78,6 @@ fabric.properties
 .idea/caches/build_file_checksums.ser
 /composeApp/build/
 /.gradle/
+
+.idea/*.iml
+.idea/*.xml
