@@ -1,8 +1,8 @@
 import edu.dyds.movies.data.local.*
 import edu.dyds.movies.domain.entity.Movie
-import org.junit.jupiter.api.Assertions.*
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
+import kotlin.test.Test
+import kotlin.test.BeforeTest
+import kotlin.test.assertEquals
 
 class TestMoviesLocalSource {
 
@@ -25,7 +25,7 @@ class TestMoviesLocalSource {
         }
     }
 
-    @BeforeEach
+    @BeforeTest
     fun init() {
         moviesLocalSource = MoviesLocalSourceImpl()
     }
