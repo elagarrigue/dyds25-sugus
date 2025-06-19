@@ -8,23 +8,6 @@ class TestMoviesLocalSource {
 
     private lateinit var moviesLocalSource: MoviesLocalSource
 
-    object FakeMovieFactory {
-        fun create(id: Int = 1, title: String = "Fake Title"): Movie {
-            return Movie(
-                id = id,
-                title = title,
-                overview = "This is a fake overview.",
-                releaseDate = "2025-01-01",
-                poster = "https://example.com/poster.jpg",
-                backdrop = "https://example.com/backdrop.jpg",
-                originalTitle = "Fake Original Title",
-                originalLanguage = "en",
-                popularity = 7.5,
-                voteAverage = 8.2
-            )
-        }
-    }
-
     @BeforeTest
     fun init() {
         moviesLocalSource = MoviesLocalSourceImpl()
