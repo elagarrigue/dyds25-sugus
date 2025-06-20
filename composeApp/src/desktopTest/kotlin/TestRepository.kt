@@ -7,7 +7,7 @@ import org.junit.Test
 import kotlin.test.assertEquals
 
 
-val MOVIE_LIST =
+private val MOVIE_LIST =
     listOf(
         FakeMovieFactory.create(1, "Titulo", 1.0),
         FakeMovieFactory.create(2, "Titulo2", 2.0),
