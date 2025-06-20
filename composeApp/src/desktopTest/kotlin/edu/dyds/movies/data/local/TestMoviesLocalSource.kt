@@ -1,7 +1,7 @@
-import edu.dyds.movies.data.local.*
-import edu.dyds.movies.domain.entity.Movie
-import kotlin.test.Test
+package edu.dyds.movies.data.local
+
 import kotlin.test.BeforeTest
+import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class TestMoviesLocalSource {
@@ -20,10 +20,12 @@ class TestMoviesLocalSource {
 
     @Test
     fun `isEmpty lista no vacia`() {
-        moviesLocalSource.addAll(listOf(
-            FakeMovieFactory.create(1, "pelicula1"),
-            FakeMovieFactory.create(2, "pelicula2")
-        ))
+        moviesLocalSource.addAll(
+            listOf(
+                FakeMovieFactory.create(1, "pelicula1"),
+                FakeMovieFactory.create(2, "pelicula2")
+            )
+        )
         assertEquals(moviesLocalSource.isEmpty(), false)
     }
 

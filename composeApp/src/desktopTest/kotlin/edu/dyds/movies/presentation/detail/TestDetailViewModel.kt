@@ -1,13 +1,11 @@
+package edu.dyds.movies.presentation.detail
+
 import edu.dyds.movies.domain.usecase.GetMovieDetailsUseCase
-import edu.dyds.movies.domain.usecase.GetMovieDetailsUseCaseImpl
-import edu.dyds.movies.presentation.detail.DetailViewModel
-import edu.dyds.movies.presentation.home.HomeViewModel
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
@@ -19,7 +17,6 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
-import kotlin.test.assertTrue
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class TestDetailViewModel {

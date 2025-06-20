@@ -1,4 +1,5 @@
-import edu.dyds.movies.data.MoviesRepositoryImpl
+package edu.dyds.movies.data
+
 import edu.dyds.movies.data.external.MoviesExternalSource
 import edu.dyds.movies.data.local.MoviesLocalSource
 import edu.dyds.movies.domain.entity.Movie
@@ -17,7 +18,7 @@ private val MOVIE_LIST =
 class TestRepository {
 
     @Test
-    fun `Test repository getPopularMovies desde remoto`() {
+    fun `Test getPopularMovies desde external source`() {
         //Arrange
         val localSource = FakeLocalSourceEmpty()
         val externalSource = FakeExternalSourceWorking()
@@ -34,7 +35,7 @@ class TestRepository {
     }
 
     @Test
-    fun `Test repository getPopularMovies desde local`() {
+    fun `Test getPopularMovies desde local source`() {
         //Arrange
         val localSource = FakeLocalSourceNotEmpty()
         val externalSource = FakeExternalSourceWorking()
@@ -51,7 +52,7 @@ class TestRepository {
     }
 
     @Test
-    fun `Test respository getPopularMovies falla`() {
+    fun `Test getPopularMovies falla en external source`() {
         //Arrange
         val localSource = FakeLocalSourceEmpty()
         val externalSource = FakeExternalSourceFailing()
@@ -67,7 +68,7 @@ class TestRepository {
     }
 
     @Test
-    fun `Test repository getMovieDetails`() {
+    fun `Test getMovieDetails`() {
         //Arrange
         val localSource = FakeLocalSourceEmpty()
         val externalSource = FakeExternalSourceWorking()
@@ -84,7 +85,7 @@ class TestRepository {
     }
 
     @Test
-    fun `Test repository getMovieDetails falla`() {
+    fun `Test getMovieDetails falla`() {
         //Arrange
         val localSource = FakeLocalSourceEmpty()
         val externalSource = FakeExternalSourceFailing()
@@ -139,5 +140,4 @@ class TestRepository {
 
         override fun getAll(): List<Movie> = MOVIE_LIST
     }
-
 }

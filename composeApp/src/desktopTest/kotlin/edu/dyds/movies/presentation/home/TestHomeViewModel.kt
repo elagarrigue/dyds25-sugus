@@ -1,6 +1,7 @@
+package edu.dyds.movies.presentation.home
+
 import edu.dyds.movies.domain.entity.QualifiedMovie
 import edu.dyds.movies.domain.usecase.GetPopularMoviesUseCase
-import edu.dyds.movies.presentation.home.HomeViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

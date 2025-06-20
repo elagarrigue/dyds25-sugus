@@ -1,12 +1,12 @@
+package edu.dyds.movies.domain.usecase
+
 import edu.dyds.movies.domain.repository.MoviesRepository
-import edu.dyds.movies.domain.usecase.GetMovieDetailsUseCase
-import edu.dyds.movies.domain.usecase.GetMovieDetailsUseCaseImpl
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
-import kotlin.test.Test
 import kotlin.test.BeforeTest
+import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class TestGetMovieDetailsUseCase {
