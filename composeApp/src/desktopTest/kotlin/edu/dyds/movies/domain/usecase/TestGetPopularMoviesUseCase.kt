@@ -7,6 +7,13 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import kotlin.test.assertEquals
 
+private val MOVIE_LIST =
+    listOf(
+        FakeMovieFactory.create(1, "Titulo", 1.0),
+        FakeMovieFactory.create(2, "Titulo2", 2.0),
+        FakeMovieFactory.create(9, "Titulo9", 9.0)
+    )
+
 class TestGetPopularMoviesUseCase {
 
     @Test
@@ -30,35 +37,11 @@ class TestGetPopularMoviesUseCase {
 
         override suspend fun getMovieDetails(id: Int): Movie? = null
 
-        override suspend fun getPopularMovies(): List<Movie> {
-            val list = mutableListOf<Movie>()
-            list.add(FakeMovieFactory.create(1, "Titulo", 1.0))
-            list.add(FakeMovieFactory.create(2, "Titulo2", 2.0))
-            list.add(FakeMovieFactory.create(9, "Titulo9", 9.0))
-            return list
-        }
+        override suspend fun getPopularMovies(): List<Movie> = MOVIE_LIST
     }
 
-    private fun getExpectedResultsForTest(): List<QualifiedMovie> {
-        val list = mutableListOf<QualifiedMovie>()
-        list.add(
-            QualifiedMovie(
-                FakeMovieFactory.create(9, "Titulo9", 9.0),
-                true
-            )
-        )
-        list.add(
-            QualifiedMovie(
-                FakeMovieFactory.create(2, "Titulo2", 2.0),
-                false
-            )
-        )
-        list.add(
-            QualifiedMovie(
-                FakeMovieFactory.create(1, "Titulo", 1.0),
-                false
-            )
-        )
-        return list
-    }
+    private fun getExpectedResultsForTest(): List<QualifiedMovie> =
+        MOVIE_LIST
+            .map { QualifiedMovie(it, (it.voteAverage >= 6.0)) }
+            .sortedByDescending { it.movie.voteAverage }
 }
