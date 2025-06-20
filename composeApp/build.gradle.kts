@@ -37,6 +37,7 @@ kotlin {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutines.swing)
             implementation(libs.ktor.client.okhttp)
+            implementation("io.mockk:mockk:1.14.2")
         }
     }
 
