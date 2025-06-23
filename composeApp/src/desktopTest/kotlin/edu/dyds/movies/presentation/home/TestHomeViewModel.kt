@@ -1,7 +1,12 @@
 package edu.dyds.movies.presentation.home
 
 import edu.dyds.movies.domain.entity.QualifiedMovie
+import edu.dyds.movies.domain.usecase.GetMovieDetailsUseCase
 import edu.dyds.movies.domain.usecase.GetPopularMoviesUseCase
+import edu.dyds.movies.presentation.detail.DetailViewModel
+import io.mockk.coEvery
+import io.mockk.every
+import io.mockk.mockk
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -39,10 +44,14 @@ class TestHomeViewModel {
     val testDispatcher = UnconfinedTestDispatcher()
     val testScope = CoroutineScope(testDispatcher)
 
+    private lateinit var homeViewModel: HomeViewModel
+    private lateinit var getPopularMoviesUseCase: GetPopularMoviesUseCase
 
     @BeforeTest
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
+        getPopularMoviesUseCase = mockk()
+        homeViewModel = HomeViewModel(getPopularMoviesUseCase)
     }
 
     @AfterTest
@@ -53,8 +62,7 @@ class TestHomeViewModel {
     @Test
     fun `Test getAllMovies()`() {
         //Arrange
-        val getPopularMoviesUseCase = FakeGetPopularMoviesUseCase()
-        val homeViewModel = HomeViewModel(getPopularMoviesUseCase)
+        coEvery { getPopularMoviesUseCase() } returns MOVIE_LIST
         lateinit var moviesUiState: HomeViewModel.MoviesUiState
         testScope.launch {
             homeViewModel.moviesStateFlow.collect { moviesUiState = it }
@@ -66,9 +74,5 @@ class TestHomeViewModel {
         //Assert
         assertEquals(moviesUiState.movies, MOVIE_LIST)
         assertEquals(moviesUiState.isLoading, false)
-    }
-
-    class FakeGetPopularMoviesUseCase : GetPopularMoviesUseCase {
-        override suspend fun invoke(): List<QualifiedMovie> = MOVIE_LIST
     }
 }

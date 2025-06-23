@@ -3,6 +3,8 @@ package edu.dyds.movies.domain.usecase
 import edu.dyds.movies.domain.entity.Movie
 import edu.dyds.movies.domain.entity.QualifiedMovie
 import edu.dyds.movies.domain.repository.MoviesRepository
+import io.mockk.coEvery
+import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -19,7 +21,8 @@ class TestGetPopularMoviesUseCase {
     @Test
     fun `test GetPopularMoviesUseCase con lista con elementos`() {
         //Arrange
-        val repository = FakeRepositoryListaConMovies()
+        val repository = mockk<MoviesRepository>()
+        coEvery { repository.getPopularMovies() } returns MOVIE_LIST
         val useCase = GetPopularMoviesUseCaseImpl(repository)
         val expectedResult = getExpectedResultsForTest()
 
@@ -38,10 +41,29 @@ class TestGetPopularMoviesUseCase {
         override suspend fun getMovieDetails(id: Int): Movie? = null
 
         override suspend fun getPopularMovies(): List<Movie> = MOVIE_LIST
+
     }
 
-    private fun getExpectedResultsForTest(): List<QualifiedMovie> =
-        MOVIE_LIST
-            .map { QualifiedMovie(it, (it.voteAverage >= 6.0)) }
-            .sortedByDescending { it.movie.voteAverage }
+    private fun getExpectedResultsForTest(): List<QualifiedMovie> {
+        val list = mutableListOf<QualifiedMovie>()
+        list.add(
+            QualifiedMovie(
+                MOVIE_LIST[2],
+                true
+            )
+        )
+        list.add(
+            QualifiedMovie(
+                MOVIE_LIST[1],
+                false
+            )
+        )
+        list.add(
+            QualifiedMovie(
+                MOVIE_LIST[0],
+                false
+            )
+        )
+        return list
+    }
 }

@@ -3,6 +3,12 @@ package edu.dyds.movies.data
 import edu.dyds.movies.data.external.MoviesExternalSource
 import edu.dyds.movies.data.local.MoviesLocalSource
 import edu.dyds.movies.domain.entity.Movie
+import io.mockk.Called
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -17,11 +23,14 @@ private val MOVIE_LIST =
 
 class TestRepository {
 
+    private var localSource: MoviesLocalSource = mockk(relaxed = true)
+    private var externalSource: MoviesExternalSource = mockk(relaxed = true)
+
     @Test
     fun `Test getPopularMovies desde external source`() {
         //Arrange
-        val localSource = FakeLocalSourceEmpty()
-        val externalSource = FakeExternalSourceWorking()
+        every { localSource.isEmpty() } returns true
+        coEvery { externalSource.getTMDBPopularMovies() } returns MOVIE_LIST
         val repository = MoviesRepositoryImpl(localSource, externalSource)
         val expectedResult = MOVIE_LIST
 
@@ -31,14 +40,14 @@ class TestRepository {
 
         //Assert
         assertEquals(expectedResult, result)
-        assertEquals(localSource.savesMovies, true)
+        verify { localSource.addAll(any()) }
     }
 
     @Test
     fun `Test getPopularMovies desde local source`() {
         //Arrange
-        val localSource = FakeLocalSourceNotEmpty()
-        val externalSource = FakeExternalSourceWorking()
+        every { localSource.isEmpty() } returns false
+        every { localSource.getAll() } returns MOVIE_LIST
         val repository = MoviesRepositoryImpl(localSource, externalSource)
         val expectedResult = MOVIE_LIST
 
@@ -48,14 +57,14 @@ class TestRepository {
 
         //Assert
         assertEquals(expectedResult, result)
-        assertEquals(false, externalSource.getTMDBPopularMoviesCalled)
+        coVerify(exactly = 0) { externalSource.getTMDBPopularMovies() }
     }
 
     @Test
     fun `Test getPopularMovies falla en external source`() {
         //Arrange
-        val localSource = FakeLocalSourceEmpty()
-        val externalSource = FakeExternalSourceFailing()
+        coEvery { externalSource.getTMDBPopularMovies() } throws Exception()
+        every { localSource.isEmpty() } returns true
         val repository = MoviesRepositoryImpl(localSource, externalSource)
         val expectedResult = emptyList<Movie>()
 
@@ -70,8 +79,7 @@ class TestRepository {
     @Test
     fun `Test getMovieDetails`() {
         //Arrange
-        val localSource = FakeLocalSourceEmpty()
-        val externalSource = FakeExternalSourceWorking()
+        coEvery { externalSource.getTMDBMovieDetails(any()) } returns FakeMovieFactory.create(3)
         val repository = MoviesRepositoryImpl(localSource, externalSource)
         val movieId = 3
         val expectedResult = FakeMovieFactory.create(3)
@@ -87,8 +95,7 @@ class TestRepository {
     @Test
     fun `Test getMovieDetails falla`() {
         //Arrange
-        val localSource = FakeLocalSourceEmpty()
-        val externalSource = FakeExternalSourceFailing()
+        coEvery { externalSource.getTMDBMovieDetails(any()) } throws Exception()
         val repository = MoviesRepositoryImpl(localSource, externalSource)
         val movieId = 3
         val expectedResult = null
@@ -99,45 +106,5 @@ class TestRepository {
 
         //Assert
         assertEquals(expectedResult, result)
-    }
-
-    class FakeExternalSourceWorking : MoviesExternalSource {
-        var getTMDBPopularMoviesCalled = false
-        override suspend fun getTMDBMovieDetails(id: Int) = FakeMovieFactory.create(id)
-
-        override suspend fun getTMDBPopularMovies(): List<Movie> {
-            getTMDBPopularMoviesCalled = true
-            return MOVIE_LIST
-        }
-    }
-
-    class FakeExternalSourceFailing : MoviesExternalSource {
-        override suspend fun getTMDBMovieDetails(id: Int): Movie {
-            throw Exception("Error")
-        }
-
-        override suspend fun getTMDBPopularMovies(): List<Movie> {
-            throw Exception("Error")
-        }
-    }
-
-    class FakeLocalSourceEmpty : MoviesLocalSource {
-        var savesMovies = false
-        override fun isEmpty() = true
-
-        override fun addAll(movies: List<Movie>) {
-            savesMovies = true
-        }
-
-        override fun getAll(): List<Movie> = emptyList()
-    }
-
-    class FakeLocalSourceNotEmpty : MoviesLocalSource {
-        override fun isEmpty() = false
-
-        override fun addAll(movies: List<Movie>) {
-        }
-
-        override fun getAll(): List<Movie> = MOVIE_LIST
     }
 }
