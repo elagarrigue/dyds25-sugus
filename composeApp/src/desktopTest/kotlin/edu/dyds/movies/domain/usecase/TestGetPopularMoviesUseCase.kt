@@ -1,6 +1,5 @@
 package edu.dyds.movies.domain.usecase
 
-import edu.dyds.movies.domain.entity.Movie
 import edu.dyds.movies.domain.entity.QualifiedMovie
 import edu.dyds.movies.domain.repository.MoviesRepository
 import io.mockk.coEvery
@@ -34,14 +33,6 @@ class TestGetPopularMoviesUseCase {
 
         //Assert
         assertEquals(expectedResult, result)
-    }
-
-    class FakeRepositoryListaConMovies : MoviesRepository {
-
-        override suspend fun getMovieDetails(id: Int): Movie? = null
-
-        override suspend fun getPopularMovies(): List<Movie> = MOVIE_LIST
-
     }
 
     private fun getExpectedResultsForTest(): List<QualifiedMovie> {

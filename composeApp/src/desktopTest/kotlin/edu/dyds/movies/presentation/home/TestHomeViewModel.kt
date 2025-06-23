@@ -1,11 +1,8 @@
 package edu.dyds.movies.presentation.home
 
 import edu.dyds.movies.domain.entity.QualifiedMovie
-import edu.dyds.movies.domain.usecase.GetMovieDetailsUseCase
 import edu.dyds.movies.domain.usecase.GetPopularMoviesUseCase
-import edu.dyds.movies.presentation.detail.DetailViewModel
 import io.mockk.coEvery
-import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
