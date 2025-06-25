@@ -20,7 +20,7 @@ private val MOVIE_LIST =
         FakeMovieFactory.create(3, "Titulo3", 3.0)
     )
 
-class TestRepository {
+class TestMoviesRepository {
 
     private var localSource: MoviesLocalSource = mockk(relaxed = true)
     private var externalSource: MoviesExternalSource = mockk(relaxed = true)
