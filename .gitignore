@@ -79,5 +79,5 @@ fabric.properties
 /composeApp/build/
 /.gradle/
 
-.idea/*.iml
-.idea/*.xml
+.idea/*
+build/*
